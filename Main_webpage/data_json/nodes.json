@@ -1,0 +1,62 @@
+[
+  {
+    "id": "Node-A1",
+    "name": "Water Logger - HCM",
+    "lat": 10.76897,
+    "lng": 106.66421,
+    "status": "Online",
+    "data": {
+      "temperature": "32°C",
+      "humidity": "68%",
+      "pressure": "1012 hPa"
+    }
+  },
+  {
+    "id": "Node-B2",
+    "name": "Air Quality - HCM",
+    "lat": 10.76889,
+    "lng": 106.66412,
+    "status": "Online",
+    "data": {
+      "pm2_5": "35 µg/m³",
+      "pm10": "52 µg/m³",
+      "co2": "415 ppm"
+    }
+  },
+  {
+    "id": "Node-C2",
+    "name": "Air Quality - HCM",
+    "lat": 10.76899,
+    "lng": 106.664244,
+    "status": "Online",
+    "data": {
+      "pm2_5": "35 µg/m³",
+      "pm10": "52 µg/m³",
+      "co2": "415 ppm"
+    }
+  },
+  {
+    "id": "Node-D2",
+    "name": "Air Quality - Tay Ninh",
+    "lat": 0,
+    "lng": 0,
+    "status": "Offline",
+    "data": {
+      "pm2_5": "35 µg/m³",
+      "pm10": "52 µg/m³",
+      "co2": "415 ppm"
+    }
+  },
+  {
+    "id": "Node-D2",
+    "name": "Air Quality - Tay Ninh",
+    "lat": 0,
+    "lng": 0,
+    "status": "Offline",
+    "data": {
+      "pm2_5": "35 µg/m³",
+      "pm10": "52 µg/m³",
+      "co2": "415 ppm"
+    }
+  }
+]

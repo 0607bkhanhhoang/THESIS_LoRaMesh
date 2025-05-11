@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Node Traffic Diagram</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom right, #eef2f3, #d4dadd);
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+      margin: 0 auto;
+    }
+
+    #backBtn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 18px;
+      color: #0074D9;
+      text-decoration: none;
+      font-weight: bold;
+      background: #fff;
+      border-radius: 5px;
+      padding: 5px 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    #title {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-top: 60px;
+    }
+  </style>
+</head>
+<body>
+
+<a id="backBtn" href="javascript:history.back()">← Back</a>
+<div id="title">Traffic from Broker to Nodes</div>
+<canvas id="networkCanvas" width="1000" height="700"></canvas>
+
+<script>
+  const trafficData = {
+    "node_1": 123,
+    "node_2": 98,
+    "node_3": 76,
+    "node_4": 150,
+    "node_5": 110
+  };
+
+  const canvas = document.getElementById("networkCanvas");
+  const ctx = canvas.getContext("2d");
+
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+  const radius = 280;
+  const nodes = Object.keys(trafficData);
+  const maxTraffic = Math.max(...Object.values(trafficData));
+
+  function drawArrow(fromX, fromY, toX, toY, width, label) {
+    const headlen = 12;
+    const dx = toX - fromX;
+    const dy = toY - fromY;
+    const angle = Math.atan2(dy, dx);
+
+    ctx.beginPath();
+    ctx.lineWidth = width;
+    ctx.strokeStyle = "#3498db";
+    ctx.moveTo(fromX, fromY);
+    ctx.lineTo(toX, toY);
+    ctx.stroke();
+
+    // Draw arrowhead
+    ctx.beginPath();
+    ctx.moveTo(toX, toY);
+    ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
+    ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
+    ctx.closePath();
+    ctx.fillStyle = "#2980b9";
+    ctx.fill();
+
+    // Draw traffic label on arrow
+    const labelX = fromX + dx * 0.5;
+    const labelY = fromY + dy * 0.5 - 10;
+    ctx.fillStyle = "#34495e";
+    ctx.font = "14px Arial";
+    ctx.fillText(label, labelX, labelY);
+  }
+
+  function drawNode(x, y, label, traffic) {
+    ctx.beginPath();
+    ctx.arc(x, y, 26, 0, 2 * Math.PI);
+    ctx.fillStyle = "#e74c3c";
+    ctx.fill();
+    ctx.strokeStyle = "#c0392b";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    ctx.fillStyle = "#fff";
+    ctx.font = "13px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(label, x, y + 5);
+
+    // Tooltip style traffic info (visible on hover in some browsers)
+    const tooltip = document.createElement("title");
+    tooltip.textContent = `${label}: ${traffic} packets`;
+  }
+
+  function drawBroker() {
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 35, 0, 2 * Math.PI);
+    ctx.fillStyle = "#2ecc71";
+    ctx.fill();
+    ctx.strokeStyle = "#27ae60";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    ctx.fillStyle = "#fff";
+    ctx.font = "bold 14px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("Broker", centerX, centerY + 5);
+  }
+
+  function drawDiagram() {
+    drawBroker();
+
+    nodes.forEach((node, i) => {
+      const angle = (i / nodes.length) * 2 * Math.PI - Math.PI / 2;
+      const x = centerX + radius * Math.cos(angle);
+      const y = centerY + radius * Math.sin(angle);
+      const traffic = trafficData[node];
+      const lineWidth = 2 + (traffic / maxTraffic) * 10;
+
+      drawArrow(centerX, centerY, x, y, lineWidth, `${traffic}`);
+      drawNode(x, y, node, traffic);
+    });
+  }
+
+  drawDiagram();
+</script>
+
+</body>
+</html>

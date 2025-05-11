@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Broker Config Viewer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f6f8;
+    }
+    h2 {
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 6px;
+      margin-top: 4px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    #topics {
+      margin-top: 10px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    pre {
+      background: #fff;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>MQTT Broker Configuration</h2>
+
+  <label>Host: <input type="text" id="host"></label>
+  <label>Port: <input type="number" id="port"></label>
+  <label>Protocol: <input type="text" id="protocol"></label>
+  <label>Client ID: <input type="text" id="client_id"></label>
+  <label>Username: <input type="text" id="username"></label>
+  <label>Password: <input type="password" id="password"></label>
+  <label>Keep Alive (s): <input type="number" id="keep_alive"></label>
+  <label>Clean Session: <input type="checkbox" id="clean_session"></label>
+  <label>Use TLS: <input type="checkbox" id="tls"></label>
+
+  <label>Topics (comma-separated):</label>
+  <textarea id="topics" rows="3"></textarea>
+
+  <button onclick="saveConfig()">Save & Show JSON</button>
+
+  <pre id="output"></pre>
+
+  <script>
+    async function loadBrokerConfig() {
+      try {
+        const res = await fetch('static/broker/broker_info.json');
+        const json = await res.json();
+        const broker = json.broker || json; // fallback in case the structure is flat
+
+        // Load values into form
+        document.getElementById("host").value = broker.host || "";
+        document.getElementById("port").value = broker.port || 1883;
+        document.getElementById("protocol").value = broker.protocol || "mqtt";
+        document.getElementById("client_id").value = broker.client_id || "";
+        document.getElementById("username").value = broker.username || "";
+        document.getElementById("password").value = broker.password || "";
+        document.getElementById("keep_alive").value = broker.keep_alive || 60;
+        document.getElementById("clean_session").checked = broker.clean_session || false;
+        document.getElementById("tls").checked = broker.tls || false;
+        document.getElementById("topics").value = (broker.topics || []).join(", ");
+      } catch (err) {
+        console.error("Error loading broker info:", err);
+      }
+    }
+
+    function saveConfig() {
+      const updatedConfig = {
+        host: document.getElementById("host").value,
+        port: parseInt(document.getElementById("port").value),
+        protocol: document.getElementById("protocol").value,
+        client_id: document.getElementById("client_id").value,
+        username: document.getElementById("username").value,
+        password: document.getElementById("password").value,
+        keep_alive: parseInt(document.getElementById("keep_alive").value),
+        clean_session: document.getElementById("clean_session").checked,
+        tls: document.getElementById("tls").checked,
+        topics: document.getElementById("topics").value.split(",").map(s => s.trim())
+      };
+
+      document.getElementById("output").textContent = JSON.stringify(updatedConfig, null, 2);
+      console.log("Updated Config:", updatedConfig);
+    }
+
+    window.onload = loadBrokerConfig;
+  </script>
+
+</body>
+</html>

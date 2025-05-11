@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Settings & Users</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+      display: flex;
+      height: 100vh;
+    }
+
+    /* Sidebar */
+    #nav-panel {
+      width: 220px;
+      background-color: #343a40;
+      color: white;
+      padding-top: 40px;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #nav-panel h2 {
+      font-size: 18px;
+      padding: 0 20px 20px;
+    }
+
+    #nav-panel ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    #nav-panel ul li {
+      padding: 14px 20px;
+      cursor: pointer;
+    }
+
+    #nav-panel ul li:hover {
+      background-color: #495057;
+    }
+
+    #nav-panel ul li a {
+      text-decoration: none;
+      color: white;
+      display: block;
+    }
+
+    /* Main content */
+    .settings-content {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+    }
+
+    .settings-content h2 {
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation Panel -->
+<div id="nav-panel">
+  <h2>⚙️ Settings</h2>
+  <ul>
+    <li><a href="index.html">🏠 Dashboard</a></li>
+    <li><a href="all-nodes.html">📊 All Nodes</a></li>
+    <li><a href="analytics.html">📈 AI Analytics</a></li>
+    <li><a href="settings.html">👤 Settings & Users</a></li>
+  </ul>
+</div>
+
+<!-- Settings Content -->
+<div class="settings-content">
+  <h2>User Profile Settings</h2>
+  <form id="settings-form">
+    <div class="form-group">
+      <label for="username">Display Name</label>
+      <input type="text" id="username" placeholder="Enter your name">
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" placeholder="you@example.com">
+    </div>
+
+    <div class="form-group">
+      <label for="password">Change Password</label>
+      <input type="password" id="password" placeholder="New password">
+    </div>
+
+    <div class="form-group">
+      <label for="theme">Theme</label>
+      <select id="theme">
+        <option value="light">☀️ Light Mode</option>
+        <option value="dark">🌙 Dark Mode</option>
+      </select>
+    </div>
+
+    <button type="submit">Save Changes</button>
+  </form>
+</div>
+
+<script>
+  // Example: Save settings to local storage (you can replace with API call)
+  document.getElementById('settings-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const settings = {
+      username: document.getElementById('username').value,
+      email: document.getElementById('email').value,
+      password: document.getElementById('password').value,
+      theme: document.getElementById('theme').value
+    };
+    console.log('Settings saved:', settings);
+    alert('✅ Settings saved successfully!');
+  });
+</script>
+
+</body>
+</html>
